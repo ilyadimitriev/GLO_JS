@@ -1,22 +1,7 @@
 // Присвоение значений
-let money = 65e3;
 const income = '30000';
-let addExpenses = 'Интернет, Подписки, Такси, Психолог, Донаты';
-let deposit = true;
 const mission = 3e5;
 const period = 8;
-let budgetDay = money / 30;
-
-money = Number(prompt('Ваш месячный доход?'));
-
-let expenses1 = prompt('Введите обязательную статью расходов?');
-let expenses2 = prompt('Введите обязательную статью расходов?');
-let amount1 = Number(prompt('Во сколько это обойдется?'));
-let amount2 = Number(prompt('Во сколько это обойдется?'));
-
-let budgetMonth = money - (amount1 + amount2);
-
-budgetDay = budgetMonth / 30;
 
 // Использование методов и свойств
 
@@ -35,16 +20,25 @@ budgetDay = budgetMonth / 30;
 
 //Урок 3
 
-addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
-
-deposit = prompt('Есть ли у вас депозит в банке?');
-
-
+//Пункт 2
+const money = Number(prompt('Ваш месячный доход?'));
+//Пункт 3
+const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+//Пункт 4
+const deposit = prompt('Есть ли у вас депозит в банке?');
+//Пункт 5
+const expenses1 = prompt('Введите обязательную статью расходов?');
+const amount1 = Number(prompt('Во сколько это обойдется?'));
+const expenses2 = prompt('Введите обязательную статью расходов?');
+const amount2 = Number(prompt('Во сколько это обойдется?'));
+//Пункт 6
+const budgetMonth = money - (amount1 + amount2);
 console.log(budgetMonth);
-
-//За сколько месяцев будет достигнута цель
+//Пункт 7
 console.log(Math.ceil(mission / budgetMonth));
-
+//Пункт 8
+const budgetDay = Math.floor(budgetMonth / 30);
+//Пункт 9
 if (budgetDay >= 1200) {
     alert('У вас высокий уровень дохода');
 }
