@@ -27,7 +27,7 @@ function getExpensesMonth(){
 }
 // Пункт 2
 function  getAccumulatedMonth(){
-    return +income + money - (amount1 + amount2);
+    return + money - (amount1 + amount2);
 }
 // Пункт 3
 const accumulatedMonth = getAccumulatedMonth();
@@ -38,17 +38,17 @@ function getTargetMonth(){
 // Пункт 6
 const budgetDay = Math.floor(accumulatedMonth / 30);
 // Пункт 7
-function showTypeOf(a){
-    return a + ', ' + typeof(a);
+function showTypeOf(varName){
+    return varName + ', ' + typeof(varName);
 }
-function getStatusIncome(a){
-    if (a >= 1200) {
+function getStatusIncome(income){
+    if (income >= 1200) {
             return 'У вас высокий уровень дохода';
         }
-        else if (a >= 600) {
+        else if (income >= 600) {
             return'У вас средний уровень дохода';
         }
-        else if (a >= 0 ) {
+        else if (income >= 0 ) {
             return'К сожалению у вас уровень дохода ниже среднего';
         }
         else {
