@@ -1,13 +1,5 @@
 'use strict';
-
-const income = '30000';
-const mission = 3e5;
-const period = 8;
-let money = 65000;
-const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Интернет, Подписки, Такси, Психолог, Донаты');
-
-const deposit = confirm('Есть ли у вас депозит в банке?');
-let expenses = [];
+let money;
 
 function isNumber(num) {
     return !isNaN(num) && !isNaN(parseFloat(num)) && (isFinite(num));
@@ -17,13 +9,20 @@ do {
     money = prompt('Ваш месячный доход?', 65000);
 } while (!isNumber(money));
 
+const mission = 3e5;
+const period = 8;
+const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Интернет, Подписки, Такси, Психолог, Донаты');
+
+const deposit = confirm('Есть ли у вас депозит в банке?');
+let expenses = [];
+
 function getExpensesMonth(){
     let sum = 0;
     for (let i = 0, cost; i < 2; i++) {
         expenses[i] = prompt('Введите обязательную статью расходов', 'Еда');
-        for (cost = prompt('Во сколько это обойдется?', 8000);!isNumber(cost);) {
+        do {
             cost = prompt('Во сколько это обойдется?', 8000);
-        }
+        } while (!isNumber(cost));
         sum += +cost;
     }
     return sum;
