@@ -69,7 +69,22 @@ function start(){
     console.log('Расходы за месяц: ' + appData.expensesMounth);
     console.log('Cрок достижения цели в месяцах: ' + appData.getTargetMonth());
     console.log(appData.getStatusIncome());
+    console.log('Наша программа включает в себя данные:');
+    for (let key in appData) {
+        if (typeof(appData[key]) === 'object') {
+            console.log(key + ':');
+            console.log(appData[key]);
+        }
+        else if (typeof(appData[key]) !== 'function') {
+            console.log(key + ': ' + appData[key]);
+        }
+        else {
+            continue;
+        }
+    }
 }
 
 start();
+
+
 
