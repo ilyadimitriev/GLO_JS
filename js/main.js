@@ -1,5 +1,7 @@
 'use strict';
 let money;
+const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Интернет, Подписки, Такси, Психолог, Донаты');
+const deposit = confirm('Есть ли у вас депозит в банке?');
 
 function isNumber(num) {
     return !isNaN(num) && !isNaN(parseFloat(num)) && (isFinite(num));
@@ -10,6 +12,7 @@ do {
 } while (!isNumber(money));
 
 let appData = {
+    income: {},
     mission: 3e5,
     budget: +money,
     budgetDay: 0,
@@ -72,8 +75,7 @@ function start(){
     console.log('Наша программа включает в себя данные:');
     for (let key in appData) {
         if (typeof(appData[key]) === 'object') {
-            console.log(key + ':');
-            console.log(appData[key]);
+            console.log('%s',key + ': ', appData[key]);
         }
         else if (typeof(appData[key]) !== 'function') {
             console.log(key + ': ' + appData[key]);
