@@ -1,7 +1,5 @@
 'use strict';
 let money;
-const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Интернет, Подписки, Такси, Психолог, Донаты');
-const deposit = confirm('Есть ли у вас депозит в банке?');
 
 function isNumber(num) {
     return !isNaN(num) && !isNaN(parseFloat(num)) && (isFinite(num));
@@ -13,28 +11,32 @@ do {
 
 let appData = {
     income: {},
+    addIncome: [],
+    deposit: false,
+    target: 0,
     mission: 3e5,
     budget: +money,
     budgetDay: 0,
     budgetMonth: 0,
-    expensesMounth: 0,
+    expensesMonth: 0,
     expenses: {},
+    addExpenses: [],
     getExpensesMonth: function(){
         let sum = 0;
         for (let key in appData.expenses) {
             sum += appData.expenses[key];
         }
-        return sum;
+        appData.expensesMonth = sum;
     },
     getBudget: function(){
-        return +appData.budget - appData.expensesMounth;
+        appData.budgetMonth = +appData.budget - appData.expensesMonth;
     },
     getTargetMonth: function(){
         if (Math.ceil(appData.mission / appData.budgetMonth) < 0 || appData.budgetMonth === 0) {
-            return 'Цель не будет достигнута';
+            appData.target = 'Цель не будет достигнута';
         }
         else {
-            return Math.ceil(appData.mission / appData.budgetMonth);
+            appData.target =  Math.ceil(appData.mission / appData.budgetMonth);
         }
     },
     getStatusIncome: function(){
@@ -52,6 +54,9 @@ let appData = {
         }
     },
     asking: function(){
+        let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Интернет, Подписки, Такси, Психолог, Донаты');
+        appData.addExpenses = addExpenses.toLowerCase().split(', ');
+        appData.deposit = confirm('Есть ли у вас депозит в банке?');
         let obj = {};
         for (let i = 0, cost, expense; i < 2; i++) {
             expense = prompt('Введите обязательную статью расходов (' + (i + 1) + ' из 2)');
@@ -60,17 +65,18 @@ let appData = {
             } while (!isNumber(cost));
             obj[expense] = +cost;
         }
-        return obj;
+        appData.expenses = obj;
     }
 };
 
 function start(){
-    appData.expenses = appData.asking();
-    appData.expensesMounth = appData.getExpensesMonth();
-    appData.budgetMonth = appData.getBudget();
+    appData.asking();
+    appData.getExpensesMonth();
+    appData.getBudget();
     appData.budgetDay = Math.floor(appData.budgetMonth / 30);
-    console.log('Расходы за месяц: ' + appData.expensesMounth);
-    console.log('Cрок достижения цели в месяцах: ' + appData.getTargetMonth());
+    console.log('Расходы за месяц: ' + appData.expensesMonth);
+    appData.getTargetMonth();
+    console.log('Cрок достижения цели в месяцах: ' + appData.target);
     console.log(appData.getStatusIncome());
     console.log('Наша программа включает в себя данные:');
     for (let key in appData) {
