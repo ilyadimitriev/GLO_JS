@@ -72,8 +72,14 @@ let appData = {
             } while (!isNumber(cashIncome));
             appData.income[itemIncome] = cashIncome;
         }
-        let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Интернет, Подписки, Такси, Психолог, Донаты');
-        appData.addExpenses = addExpenses.toLowerCase().split(', ');
+        let addExpenses;
+        do {
+            addExpenses =  prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Интернет, Подписки, Такси, Психолог, Донаты');
+        } while (!isString(addExpenses));
+        addExpenses = addExpenses.toLowerCase().split(',');
+        appData.addExpenses = addExpenses.map(function(word){
+            return word.trim();
+        });
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
         let obj = {};
         for (let i = 0, cost, expense; i < 2; i++) {
