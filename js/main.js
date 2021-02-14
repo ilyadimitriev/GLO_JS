@@ -38,7 +38,7 @@ const render = function(prevData){
         todoRemove.addEventListener('click', function(){
             // Запоминаем прежнее состояние todoData
             const prevData = todoData.slice();
-            todoData.pop(item);
+            todoData.splice(todoData.indexOf(item), 1);
             render(prevData);
         });
     });
