@@ -125,13 +125,13 @@ class Validator {
 	}
 	setPattern() {
 		if (!this.pattern.phone) {
-			this.pattern.phone = /^\+?\d+$/;
+			this.pattern.phone = /^\+?\d{7,13}$/;
 		}
 		if (!this.pattern.email) {
 			this.pattern.email = /^\w+@\w+\.\w{2,3}$/;
 		}
 		if (!this.pattern.name) {
-			this.pattern.name = /^[а-яё ]+/i;
+			this.pattern.name = /^[а-яё ]{2,}/i;
 		}
 		if (!this.pattern.text) {
 			this.pattern.text = /^[а-яё .,!?;:'"-]+/i;

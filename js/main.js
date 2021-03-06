@@ -440,6 +440,21 @@ const sendForm = (formId, formValidator) => {
 					statusMessage.style.cssText = `font-size: 2rem; color: #fff;`;
 					statusMessage.innerHTML = ``;
 					statusMessage.textContent = successMessage;
+					// Убираем сообщение по таймауту
+					setTimeout(() => {
+						statusMessage.style.transition = `1000ms`;
+						statusMessage.style.opacity = `0`;
+						statusMessage.addEventListener(`transitionend`,
+						event => {
+							if (event.target.closest(`.popup`)) {
+								event.target.closest(`.popup`).style.display = `none`;
+							}
+							statusMessage.style.cssText = ``;
+							statusMessage.remove();
+						}, {
+							once: true
+						});
+					}, 3000);
 					statusMessage.classList.remove(`lds-ellipsis`);
 					form.querySelectorAll(`input`).forEach(input => {
 						input.value = ``;
