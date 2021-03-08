@@ -414,7 +414,7 @@ const calc = (price = 100) => {
 };
 calc(100);
 
-	//Отправка формы
+//Отправка формы
 const sendForm = (formId, formValidator) => {
 	const errorMessage = `Что-то пошло не так...`,
 	successMessage = `Спасибо, мы скоро с Вами свяжемся!`;
@@ -435,60 +435,61 @@ const sendForm = (formId, formValidator) => {
 			formData.forEach((val, key) => {
 				body[key] = val;
 			});
-			postData(body,
-				() => {
-					statusMessage.style.cssText = `font-size: 2rem; color: #fff;`;
-					statusMessage.innerHTML = ``;
-					statusMessage.textContent = successMessage;
-					// Убираем сообщение по таймауту
-					setTimeout(() => {
-						statusMessage.style.transition = `1000ms`;
-						statusMessage.style.opacity = `0`;
-						statusMessage.addEventListener(`transitionend`,
-						event => {
-							if (event.target.closest(`.popup`)) {
-								event.target.closest(`.popup`).style.display = `none`;
-							}
-							statusMessage.style.cssText = ``;
-							statusMessage.remove();
-						}, {
-							once: true
-						});
-					}, 3000);
-					statusMessage.classList.remove(`lds-ellipsis`);
-					form.querySelectorAll(`input`).forEach(input => {
-						input.value = ``;
-					});
-				},
-				error => {
-					statusMessage.style.cssText = `font-size: 2rem;`;
-					statusMessage.innerHTML = ``;
-					statusMessage.textContent = errorMessage;
-					statusMessage.classList.remove(`lds-ellipsis`);
-					console.error(error);
-				}
-			);
+			postData(body)
+			.then(handleResponse)
+			.catch(handleError);
 		} else { // Если не прошли валидацию, ничего не запускать
 			return;
 		}
 	});
-
-	const postData = (body, outputData, errorData) => {
-		const request = new XMLHttpRequest();
-		request.addEventListener(`readystatechange`, () => {
-			if (request.readyState !== 4) {
-				return;
-			}
-			if (request.status === 200) {
-				outputData();
-			} else {
-				errorData(request.status);
-			}
+	const handleResponse = () => {
+		statusMessage.style.cssText = `font-size: 2rem; color: #fff;`;
+		statusMessage.innerHTML = ``;
+		statusMessage.textContent = successMessage;
+		// Убираем сообщение по таймауту
+		setTimeout(() => {
+			statusMessage.style.transition = `1000ms`;
+			statusMessage.style.opacity = `0`;
+			statusMessage.addEventListener(`transitionend`,
+			event => {
+				if (event.target.closest(`.popup`)) {
+					event.target.closest(`.popup`).style.display = `none`;
+				}
+				statusMessage.style.cssText = ``;
+				statusMessage.remove();
+			}, {
+				once: true
+			});
+		}, 3000);
+		statusMessage.classList.remove(`lds-ellipsis`);
+		form.querySelectorAll(`input`).forEach(input => {
+			input.value = ``;
 		});
-		request.open(`POST`, `./server.php`);
-		request.setRequestHeader(`Content-Type`, `application/json`);
-		request.send(JSON.stringify(body));
 	};
+	const handleError = error => {
+		statusMessage.style.cssText = `font-size: 2rem;`;
+		statusMessage.innerHTML = ``;
+		statusMessage.textContent = errorMessage;
+		statusMessage.classList.remove(`lds-ellipsis`);
+		console.error(error);
+	};
+	const postData = body =>
+		new Promise((resolve, reject) => {
+			const request = new XMLHttpRequest();
+			request.addEventListener(`readystatechange`, () => {
+				if (request.readyState !== 4) {
+					return;
+				}
+				if (request.status === 200) {
+					resolve();
+				} else {
+					reject(request.status);
+				}
+			});
+			request.open(`POST`, `./server.php`);
+			request.setRequestHeader(`Content-Type`, `application/json`);
+			request.send(JSON.stringify(body));
+		});
 };
 // Второй аргумент - имя валидатора из add-validation.js
 sendForm(`#form1`, validMain);
