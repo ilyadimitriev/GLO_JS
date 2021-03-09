@@ -436,7 +436,13 @@ const sendForm = (formId, formValidator) => {
 				body[key] = val;
 			});
 			postData(body)
-			.then(handleResponse)
+			.then(response => {
+				if (response.status !== 200) {
+					throw new Error(`Возникла ошибка при отправки данных`);
+				} else {
+					handleResponse();
+				}
+			})
 			.catch(handleError);
 		} else { // Если не прошли валидацию, ничего не запускать
 			return;
@@ -474,21 +480,12 @@ const sendForm = (formId, formValidator) => {
 		console.error(error);
 	};
 	const postData = body =>
-		new Promise((resolve, reject) => {
-			const request = new XMLHttpRequest();
-			request.addEventListener(`readystatechange`, () => {
-				if (request.readyState !== 4) {
-					return;
-				}
-				if (request.status === 200) {
-					resolve();
-				} else {
-					reject(request.status);
-				}
-			});
-			request.open(`POST`, `./server.php`);
-			request.setRequestHeader(`Content-Type`, `application/json`);
-			request.send(JSON.stringify(body));
+		fetch(`./server.php`, {
+			method: `POST`,
+			body: JSON.stringify(body),
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		});
 };
 // Второй аргумент - имя валидатора из add-validation.js
