@@ -11,6 +11,7 @@ import calc from './modules/calc';
 import sendForm from './modules/sendForm';
 
 import Validator from './plugins/Validator';
+import sliderCarousel from './plugins/sliderCarousel';
 
 // Таймер
 countTimer(new Date().getTime() + 52342000);
@@ -31,6 +32,29 @@ tabs();
 
 // Слайдер
 slider();
+
+// Карусель для партнеров
+const carousel = new sliderCarousel({
+	wrap: `.companies-hor`,
+	main: `.companies-wrapper`,
+	slidesToShow: 6,
+	infinity: true,
+	responsive: [
+		{
+			breakpoint: 1024,
+			slidesToShow: 4
+		},
+		{
+			breakpoint: 768,
+			slidesToShow: 3
+		},
+		{
+			breakpoint: 576,
+			slidesToShow: 2
+		}
+	]
+});
+carousel.init();
 
 // Наведение на фото команды
 changeCommandPhoto();
